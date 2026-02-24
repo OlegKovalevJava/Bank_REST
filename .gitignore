@@ -1,0 +1,24 @@
+# Compiled files
+target/
+*.class
+
+# IDE
+.idea/
+*.iml
+.shelf/
+.httpRequests/
+/dataSources/
+/dataSources.local.xml
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+application-local.yml
+application-local.properties
+
+# System
+.DS_Store
+Thumbs.db
