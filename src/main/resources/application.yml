@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
@@ -15,13 +15,24 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   liquibase:
-    enabled: false  # пока отключим
+    enabled: false
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/bank-realm
+          jwk-set-uri: http://localhost:8080/realms/bank-realm/protocol/openid-connect/certs
 
 server:
   port: 8080
 
+logging:
+  level:
+    org.springframework.jdbc: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
 
-#
 # application.yml — главный конфигурационный файл Spring Boot.
 
 #Что нужно сделать:
