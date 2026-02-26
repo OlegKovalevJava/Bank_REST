@@ -23,9 +23,6 @@ public class User extends AbstractEntity {
 
     private String fullName;
 
-    @Column(name = "keycloak_id")
-    private String keycloakId;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))

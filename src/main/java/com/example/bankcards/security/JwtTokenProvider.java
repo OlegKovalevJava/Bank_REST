@@ -29,19 +29,19 @@ public class JwtTokenProvider {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         return Jwts.builder()
-                .subject(userDetails.getUsername())           // .setSubject → .subject
-                .issuedAt(new Date())                         // .setIssuedAt → .issuedAt
-                .expiration(new Date(new Date().getTime() + jwtExpiration)) // .setExpiration → .expiration
-                .signWith(key(), Jwts.SIG.HS512)             // Новый синтаксис подписи!
+                .subject(userDetails.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date(new Date().getTime() + jwtExpiration))
+                .signWith(key(), Jwts.SIG.HS512)
                 .compact();
     }
 
     public String getUsernameFromToken(String token) {
         return Jwts.parser()
-                .verifyWith(key())                            // .setSigningKey → .verifyWith
+                .verifyWith(key())
                 .build()
-                .parseSignedClaims(token)                     // .parseClaimsJws → .parseSignedClaims
-                .getPayload()                                 // .getBody → .getPayload
+                .parseSignedClaims(token)
+                .getPayload()
                 .getSubject();
     }
 

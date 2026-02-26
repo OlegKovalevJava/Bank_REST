@@ -64,4 +64,18 @@ public class AuthController {
 
         return ResponseEntity.ok("User registered successfully!");
     }
+
+    @GetMapping("/debug/user/{username}")
+    public String debugUser(@PathVariable String username) {
+        return userRepository.findByUsername(username)
+                .map(user -> "User found: " + user.getUsername() +
+                        ", password hash: " + user.getPassword())
+                .orElse("User not found");
+    }
+
+    @GetMapping("/debug/check-password")
+    public String checkPassword(@RequestParam String raw, @RequestParam String encoded) {
+        boolean matches = passwordEncoder.matches(raw, encoded);
+        return "Raw: " + raw + ", Encoded: " + encoded + ", Matches: " + matches;
+    }
 }
