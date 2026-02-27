@@ -10,11 +10,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j  // 👈 Добавь эту аннотацию, если её нет
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -31,19 +31,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 });
 
         log.info("✅ User found: {}", user.getUsername());
-        log.info("🔑 Password hash from DB: {}", user.getPassword());
+        log.info("🔑 Password hash: {}", user.getPassword());
+        log.info("👑 User roles: {}", user.getRoles());
 
-        // Создаем UserDetails для Spring Security
-        org.springframework.security.core.userdetails.User securityUser =
-                new org.springframework.security.core.userdetails.User(
-                        user.getUsername(),
-                        user.getPassword(),
-                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
-                );
-
-        log.info("🎯 UserDetails created for: {}", securityUser.getUsername());
-        log.info("🔒 Password hash in UserDetails: {}", securityUser.getPassword());
-
-        return securityUser;
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getRoles().stream()
+                        .map(role -> new SimpleGrantedAuthority(role.name()))
+                        .collect(Collectors.toList()
+                        )
+        );
     }
 }
