@@ -1,18 +1,20 @@
 package com.example.bankcards.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import java.util.HashSet;
+import lombok.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
 public class User extends AbstractEntity {
 
     @Column(unique = true, nullable = false)
+    @EqualsAndHashCode.Include
+    @ToString.Include
     private String username;
 
     @Column(nullable = false)
@@ -23,8 +25,9 @@ public class User extends AbstractEntity {
 
     private String fullName;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 }

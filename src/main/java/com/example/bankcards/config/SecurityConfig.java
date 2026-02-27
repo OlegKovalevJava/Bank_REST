@@ -2,7 +2,6 @@ package com.example.bankcards.config;
 
 import com.example.bankcards.security.JwtAuthenticationFilter;
 import com.example.bankcards.security.UserDetailsServiceImpl;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,13 +29,17 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()    // Публичные эндпоинты
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/api/admin/**").authenticated()
-                        .anyRequest().authenticated()).exceptionHandling(exceptions -> exceptions
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // Эндпоинты с ролями
+                        .requestMatchers("/api/user/**").hasRole("USER")
+                        .anyRequest().authenticated()  // Все остальное требует аутентификации
+                )
+                .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                        }))
+                            response.sendError(401, "Unauthorized");
+                        })
+                )
                 .userDetailsService(userDetailsService)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
