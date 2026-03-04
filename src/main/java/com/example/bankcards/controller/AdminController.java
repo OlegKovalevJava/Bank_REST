@@ -1,6 +1,6 @@
 package com.example.bankcards.controller;
 
-import com.example.bankcards.dto.UserDto;
+import com.example.bankcards.dto.response.UserDto;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
