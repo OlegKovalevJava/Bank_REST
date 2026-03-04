@@ -36,6 +36,7 @@ public class AdminController {
         dto.setFullName(user.getFullName());
         dto.setCreatedAt(user.getCreatedAt());
         dto.setUpdatedAt(user.getUpdatedAt());
+
         return dto;
     }
 }

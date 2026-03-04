@@ -26,21 +26,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
-                    log.error("❌ User not found: {}", username);
+                    log.error("User not found: {}", username);
                     return new UsernameNotFoundException("User not found with username: " + username);
                 });
 
-        log.info("✅ User found: {}", user.getUsername());
-        log.info("🔑 Password hash: {}", user.getPassword());
-        log.info("👑 User roles: {}", user.getRoles());
+        log.info("User found: {}", user.getUsername());
+        log.info("Password hash: {}", user.getPassword());
+        log.info("User roles: {}", user.getRoles());
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
                 user.getRoles().stream()
                         .map(role -> new SimpleGrantedAuthority(role.name()))
-                        .collect(Collectors.toList()
-                        )
+                        .collect(Collectors.toList())
         );
     }
 }

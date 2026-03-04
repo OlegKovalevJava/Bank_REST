@@ -9,6 +9,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class TransferResponse {
+
     private UUID transactionId;
     private String sourceCardMask;
     private String destinationCardMask;

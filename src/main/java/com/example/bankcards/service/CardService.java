@@ -3,7 +3,7 @@ package com.example.bankcards.service;
 import com.example.bankcards.dto.request.CardRequest;
 import com.example.bankcards.dto.response.CardResponse;
 import com.example.bankcards.entity.Card;
-import com.example.bankcards.entity.CardStatus;
+import com.example.bankcards.entity.enums.CardStatus;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.exception.ResourceNotFoundException;
 import com.example.bankcards.exception.UnauthorizedException;
@@ -31,14 +31,11 @@ public class CardService {
     private final UserRepository userRepository;
     private final CardMapper cardMapper;
 
-    // ========== Методы для USER ==========
-
     public Page<CardResponse> getCurrentUserCards(Pageable pageable) {
         User currentUser = getCurrentUser();
         log.info("Fetching cards for user: {}", currentUser.getUsername());
 
-        return cardRepository.findByUserId(currentUser.getId(), pageable)
-                .map(cardMapper::toResponse);
+        return cardRepository.findByUserId(currentUser.getId(), pageable).map(cardMapper::toResponse);
     }
 
     public CardResponse getCardById(UUID cardId) {
@@ -70,10 +67,9 @@ public class CardService {
         User currentUser = getCurrentUser();
         log.info("Blocking card {} by user {}", cardId, currentUser.getUsername());
 
-        Card card = cardRepository.findById(cardId)
-                .orElseThrow(() -> new ResourceNotFoundException("Card not found"));
+        Card card = cardRepository.findById(cardId).orElseThrow(() -> new ResourceNotFoundException("Card not found"));
 
-        if (!card.getUser().getId().equals(currentUser.getId()) && !isCurrentUserAdmin()) {
+        if (!card.getUser().getId().equals(currentUser.getId()) && isCurrentUserAdmin()) {
             throw new UnauthorizedException("You don't have permission to block this card");
         }
 
@@ -83,40 +79,31 @@ public class CardService {
         return cardMapper.toResponse(blockedCard);
     }
 
-    // ========== Новые методы для ADMIN ==========
-
-    /**
-     * Получение всех карт всех пользователей (только для ADMIN)
-     */
     public Page<CardResponse> getAllCards(Pageable pageable) {
-        if (!isCurrentUserAdmin()) {
+        if (isCurrentUserAdmin()) {
             throw new UnauthorizedException("Admin access required");
         }
 
         log.info("Admin fetching all cards");
+
         return cardRepository.findAll(pageable)
                 .map(cardMapper::toResponse);
     }
 
-    /**
-     * Получение карт конкретного пользователя (для ADMIN)
-     */
     public Page<CardResponse> getCardsByUserId(UUID userId, Pageable pageable) {
-        if (!isCurrentUserAdmin()) {
+        if (isCurrentUserAdmin()) {
             throw new UnauthorizedException("Admin access required");
         }
 
         log.info("Admin fetching cards for user: {}", userId);
+
         return cardRepository.findByUserId(userId, pageable)
                 .map(cardMapper::toResponse);
     }
 
-    /**
-     * Активация карты (только для ADMIN)
-     */
     @Transactional
     public CardResponse activateCard(UUID cardId) {
-        if (!isCurrentUserAdmin()) {
+        if (isCurrentUserAdmin()) {
             throw new UnauthorizedException("Admin access required");
         }
 
@@ -131,12 +118,9 @@ public class CardService {
         return cardMapper.toResponse(activatedCard);
     }
 
-    /**
-     * Удаление карты (только для ADMIN)
-     */
     @Transactional
     public void deleteCard(UUID cardId) {
-        if (!isCurrentUserAdmin()) {
+        if (isCurrentUserAdmin()) {
             throw new UnauthorizedException("Admin access required");
         }
 
@@ -150,8 +134,6 @@ public class CardService {
         log.info("Card {} deleted successfully", cardId);
     }
 
-    // ========== Вспомогательные методы ==========
-
     private User getCurrentUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
@@ -163,6 +145,6 @@ public class CardService {
     private boolean isCurrentUserAdmin() {
         return SecurityContextHolder.getContext().getAuthentication()
                 .getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+                .noneMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
     }
 }

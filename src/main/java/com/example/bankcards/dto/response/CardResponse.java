@@ -1,6 +1,6 @@
 package com.example.bankcards.dto.response;
 
-import com.example.bankcards.entity.CardStatus;
+import com.example.bankcards.entity.enums.CardStatus;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Data
 public class CardResponse {
+
     private UUID id;
     private String maskedCardNumber;
     private String cardHolderName;
