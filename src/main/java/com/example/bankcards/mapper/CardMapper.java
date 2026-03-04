@@ -11,7 +11,7 @@ import org.mapstruct.Named;
 public interface CardMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "user", ignore = true)  // устанавливается в сервисе
+    @Mapping(target = "user", ignore = true)
     @Mapping(target = "status", constant = "ACTIVE")
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
@@ -25,6 +25,7 @@ public interface CardMapper {
         if (cardNumber == null || cardNumber.length() < 4) {
             return "****";
         }
+
         return "**** **** **** " + cardNumber.substring(cardNumber.length() - 4);
     }
 }

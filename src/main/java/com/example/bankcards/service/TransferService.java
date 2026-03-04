@@ -3,7 +3,7 @@ package com.example.bankcards.service;
 import com.example.bankcards.dto.request.TransferRequest;
 import com.example.bankcards.dto.response.TransferResponse;
 import com.example.bankcards.entity.Card;
-import com.example.bankcards.entity.CardStatus;
+import com.example.bankcards.entity.enums.CardStatus;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.exception.CardBlockedException;
 import com.example.bankcards.exception.InsufficientFundsException;
@@ -20,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -36,29 +35,25 @@ public class TransferService {
 
     public TransferResponse transfer(TransferRequest request) {
         User currentUser = getCurrentUser();
-        log.info("💰 Transfer requested by user: {} from card: {} to card: {}, amount: {}",
+        log.info("Transfer requested by user: {} from card: {} to card: {}, amount: {}",
                 currentUser.getUsername(), request.getSourceCardId(),
                 request.getDestinationCardId(), request.getAmount());
 
-        // 1. Получаем карты
         Card sourceCard = cardRepository.findById(request.getSourceCardId())
                 .orElseThrow(() -> new ResourceNotFoundException("Source card not found"));
 
         Card destCard = cardRepository.findById(request.getDestinationCardId())
                 .orElseThrow(() -> new ResourceNotFoundException("Destination card not found"));
 
-        // 2. Проверяем, что карты принадлежат текущему пользователю
         if (!sourceCard.getUser().getId().equals(currentUser.getId()) ||
                 !destCard.getUser().getId().equals(currentUser.getId())) {
             throw new UnauthorizedException("You can only transfer between your own cards");
         }
 
-        // 3. Проверяем, что это разные карты
         if (sourceCard.getId().equals(destCard.getId())) {
             throw new SameCardTransferException("Cannot transfer to the same card");
         }
 
-        // 4. Проверяем статусы карт
         if (sourceCard.getStatus() != CardStatus.ACTIVE) {
             throw new CardBlockedException("Source card is not active");
         }
@@ -67,7 +62,6 @@ public class TransferService {
             throw new CardBlockedException("Destination card is not active");
         }
 
-        // 5. Проверяем достаточно ли средств
         if (sourceCard.getBalance().compareTo(request.getAmount()) < 0) {
             throw new InsufficientFundsException(
                     String.format("Insufficient funds. Available: %s, Requested: %s",
@@ -75,17 +69,15 @@ public class TransferService {
             );
         }
 
-        // 6. Выполняем перевод
         sourceCard.setBalance(sourceCard.getBalance().subtract(request.getAmount()));
         destCard.setBalance(destCard.getBalance().add(request.getAmount()));
 
         cardRepository.save(sourceCard);
         cardRepository.save(destCard);
 
-        log.info("✅ Transfer successful! New balances - Source: {}, Dest: {}",
+        log.info("Transfer successful! New balances - Source: {}, Dest: {}",
                 sourceCard.getBalance(), destCard.getBalance());
 
-        // 7. Формируем ответ
         return TransferResponse.builder()
                 .transactionId(UUID.randomUUID())
                 .sourceCardMask(cardMapper.maskCardNumber(sourceCard.getCardNumber()))
@@ -98,8 +90,7 @@ public class TransferService {
     }
 
     private User getCurrentUser() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return userRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));

@@ -32,9 +32,9 @@ public class AdminCardController {
     @Operation(summary = "Получить все карты всех пользователей")
     public ResponseEntity<Page<CardResponse>> getAllCards(
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-
         log.info("GET /api/admin/cards - admin fetching all cards");
         Page<CardResponse> cards = cardService.getAllCards(pageable);
+
         return ResponseEntity.ok(cards);
     }
 
@@ -43,9 +43,9 @@ public class AdminCardController {
     public ResponseEntity<Page<CardResponse>> getCardsByUserId(
             @PathVariable UUID userId,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-
         log.info("GET /api/admin/cards/user/{} - admin fetching user cards", userId);
         Page<CardResponse> cards = cardService.getCardsByUserId(userId, pageable);
+
         return ResponseEntity.ok(cards);
     }
 
@@ -54,6 +54,7 @@ public class AdminCardController {
     public ResponseEntity<CardResponse> activateCard(@PathVariable UUID cardId) {
         log.info("PATCH /api/admin/cards/{}/activate - admin activating card", cardId);
         CardResponse activatedCard = cardService.activateCard(cardId);
+
         return ResponseEntity.ok(activatedCard);
     }
 
@@ -62,6 +63,7 @@ public class AdminCardController {
     public ResponseEntity<Void> deleteCard(@PathVariable UUID cardId) {
         log.info("DELETE /api/admin/cards/{} - admin deleting card", cardId);
         cardService.deleteCard(cardId);
+
         return ResponseEntity.noContent().build();
     }
 }

@@ -76,6 +76,7 @@ public class AuthController {
     @GetMapping("/debug/check-password")
     public String checkPassword(@RequestParam String raw, @RequestParam String encoded) {
         boolean matches = passwordEncoder.matches(raw, encoded);
+
         return "Raw: " + raw + ", Encoded: " + encoded + ", Matches: " + matches;
     }
 }

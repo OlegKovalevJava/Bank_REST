@@ -1,0 +1,165 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6
+      author: OlegKovalev
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: "123e4567-e89b-12d3-a456-426614174000"  # UUID в кавычках
+              - column:
+                  name: username
+                  value: "testuser"
+              - column:
+                  name: password
+                  value: "$2a$10$9Vt5K0gK7GxJvW5K9XqQ5eJ5yH5xJ5yH5xJ5yH5xJ5yH5xJ5yH"  # спецсимволы
+              - column:
+                  name: email
+                  value: "test@example.com"
+              - column:
+                  name: full_name
+                  value: "Test User"
+              - column:
+                  name: created_at
+                  value: "2024-01-01T00:00:00"  # дата в кавычках
+              - column:
+                  name: updated_at
+                  value: "2024-01-01T00:00:00"
+
+  - changeSet:
+      id: 7
+      author: OlegKovalev
+      changes:
+        - insert:
+            tableName: cards
+            columns:
+              - column:
+                  name: id
+                  value: "223e4567-e89b-12d3-a456-426614174001"
+              - column:
+                  name: card_number
+                  value: "1234567890123456"  # номер карты как строка
+              - column:
+                  name: card_holder_name
+                  value: "Test User"
+              - column:
+                  name: expiry_date
+                  value: "2027-12-31"
+              - column:
+                  name: status
+                  value: "ACTIVE"
+              - column:
+                  name: balance
+                  value: "1000.00"  # сумма в кавычках
+              - column:
+                  name: user_id
+                  value: "123e4567-e89b-12d3-a456-426614174000"
+              - column:
+                  name: created_at
+                  value: "2024-01-01T00:00:00"
+              - column:
+                  name: updated_at
+                  value: "2024-01-01T00:00:00"
+
+  - changeSet:
+      id: 8
+      author: OlegKovalev
+      changes:
+        - insert:
+            tableName: cards
+            columns:
+              - column:
+                  name: id
+                  value: "323e4567-e89b-12d3-a456-426614174002"
+              - column:
+                  name: card_number
+                  value: "9876543210987654"
+              - column:
+                  name: card_holder_name
+                  value: "Test User"
+              - column:
+                  name: expiry_date
+                  value: "2026-06-30"
+              - column:
+                  name: status
+                  value: "ACTIVE"
+              - column:
+                  name: balance
+                  value: "500.00"
+              - column:
+                  name: user_id
+                  value: "123e4567-e89b-12d3-a456-426614174000"
+              - column:
+                  name: created_at
+                  value: "2024-01-01T00:00:00"
+              - column:
+                  name: updated_at
+                  value: "2024-01-01T00:00:00"
+
+  - changeSet:
+      id: 9
+      author: OlegKovalev
+      changes:
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: "123e4567-e89b-12d3-a456-426614174000"
+              - column:
+                  name: role
+                  value: "ROLE_USER"
+
+  - changeSet:
+      id: 10
+      author: OlegKovalev
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: "423e4567-e89b-12d3-a456-426614174003"
+              - column:
+                  name: username
+                  value: "admin"
+              - column:
+                  name: password
+                  value: "$2a$10$9Vt5K0gK7GxJvW5K9XqQ5eJ5yH5xJ5yH5xJ5yH5xJ5yH5xJ5yH"
+              - column:
+                  name: email
+                  value: "admin@example.com"
+              - column:
+                  name: full_name
+                  value: "Admin User"
+              - column:
+                  name: created_at
+                  value: "2024-01-01T00:00:00"
+              - column:
+                  name: updated_at
+                  value: "2024-01-01T00:00:00"
+
+  - changeSet:
+      id: 11
+      author: OlegKovalev
+      changes:
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: "423e4567-e89b-12d3-a456-426614174003"
+              - column:
+                  name: role
+                  value: "ROLE_ADMIN"
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: "423e4567-e89b-12d3-a456-426614174003"
+              - column:
+                  name: role
+                  value: "ROLE_USER"

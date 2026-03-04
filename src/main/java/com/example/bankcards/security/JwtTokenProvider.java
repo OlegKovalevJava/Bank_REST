@@ -51,6 +51,7 @@ public class JwtTokenProvider {
                     .verifyWith(key())
                     .build()
                     .parseSignedClaims(token);
+
             return true;
         } catch (MalformedJwtException e) {
             log.error("Invalid JWT token: {}", e.getMessage());
@@ -61,6 +62,7 @@ public class JwtTokenProvider {
         } catch (IllegalArgumentException e) {
             log.error("JWT claims string is empty: {}", e.getMessage());
         }
+
         return false;
     }
 }

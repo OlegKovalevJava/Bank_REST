@@ -1,15 +1,16 @@
 package com.example.bankcards.entity;
 
+import com.example.bankcards.entity.enums.CardStatus;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "cards")
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 public class Card extends AbstractEntity {
 
     @Column(unique = true, nullable = false)
