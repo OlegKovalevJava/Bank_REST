@@ -1,4 +1,5 @@
 databaseChangeLog:
+  # ===== ПОЛЬЗОВАТЕЛЬ 1 (testuser) =====
   - changeSet:
       id: 6
       author: OlegKovalev
@@ -8,28 +9,43 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  value: "123e4567-e89b-12d3-a456-426614174000"  # UUID в кавычках
+                  value: "123e4567-e89b-12d3-a456-426614174000"
               - column:
                   name: username
                   value: "testuser"
               - column:
                   name: password
-                  value: "$2a$10$9Vt5K0gK7GxJvW5K9XqQ5eJ5yH5xJ5yH5xJ5yH5xJ5yH5xJ5yH"  # спецсимволы
+                  value: "$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG"  # password123
               - column:
                   name: email
-                  value: "test@example.com"
+                  value: "testuser@example.com"
               - column:
                   name: full_name
-                  value: "Test User"
+                  value: "Test User 1"
               - column:
                   name: created_at
-                  value: "2024-01-01T00:00:00"  # дата в кавычках
+                  value: "2024-01-01T00:00:00"
               - column:
                   name: updated_at
                   value: "2024-01-01T00:00:00"
 
   - changeSet:
       id: 7
+      author: OlegKovalev
+      changes:
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: "123e4567-e89b-12d3-a456-426614174000"
+              - column:
+                  name: roles
+                  value: "ROLE_USER"
+
+  # Карты для testuser
+  - changeSet:
+      id: 8
       author: OlegKovalev
       changes:
         - insert:
@@ -40,10 +56,10 @@ databaseChangeLog:
                   value: "223e4567-e89b-12d3-a456-426614174001"
               - column:
                   name: card_number
-                  value: "1234567890123456"  # номер карты как строка
+                  value: "1234567890123456"
               - column:
                   name: card_holder_name
-                  value: "Test User"
+                  value: "Test User 1"
               - column:
                   name: expiry_date
                   value: "2027-12-31"
@@ -52,7 +68,7 @@ databaseChangeLog:
                   value: "ACTIVE"
               - column:
                   name: balance
-                  value: "1000.00"  # сумма в кавычках
+                  value: "1000.00"
               - column:
                   name: user_id
                   value: "123e4567-e89b-12d3-a456-426614174000"
@@ -64,7 +80,7 @@ databaseChangeLog:
                   value: "2024-01-01T00:00:00"
 
   - changeSet:
-      id: 8
+      id: 9
       author: OlegKovalev
       changes:
         - insert:
@@ -78,7 +94,7 @@ databaseChangeLog:
                   value: "9876543210987654"
               - column:
                   name: card_holder_name
-                  value: "Test User"
+                  value: "Test User 1"
               - column:
                   name: expiry_date
                   value: "2026-06-30"
@@ -98,20 +114,7 @@ databaseChangeLog:
                   name: updated_at
                   value: "2024-01-01T00:00:00"
 
-  - changeSet:
-      id: 9
-      author: OlegKovalev
-      changes:
-        - insert:
-            tableName: user_roles
-            columns:
-              - column:
-                  name: user_id
-                  value: "123e4567-e89b-12d3-a456-426614174000"
-              - column:
-                  name: role
-                  value: "ROLE_USER"
-
+  # ===== ПОЛЬЗОВАТЕЛЬ 2 (johndoe) =====
   - changeSet:
       id: 10
       author: OlegKovalev
@@ -121,19 +124,19 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  value: "423e4567-e89b-12d3-a456-426614174003"
+                  value: "123e4567-e89b-12d3-a456-426614174010"
               - column:
                   name: username
-                  value: "admin"
+                  value: "johndoe"
               - column:
                   name: password
-                  value: "$2a$10$9Vt5K0gK7GxJvW5K9XqQ5eJ5yH5xJ5yH5xJ5yH5xJ5yH5xJ5yH"
+                  value: "$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG"  # password123
               - column:
                   name: email
-                  value: "admin@example.com"
+                  value: "john@example.com"
               - column:
                   name: full_name
-                  value: "Admin User"
+                  value: "John Doe"
               - column:
                   name: created_at
                   value: "2024-01-01T00:00:00"
@@ -150,16 +153,149 @@ databaseChangeLog:
             columns:
               - column:
                   name: user_id
-                  value: "423e4567-e89b-12d3-a456-426614174003"
+                  value: "123e4567-e89b-12d3-a456-426614174010"
               - column:
-                  name: role
+                  name: roles
+                  value: "ROLE_USER"
+
+  # Карта для johndoe
+  - changeSet:
+      id: 12
+      author: OlegKovalev
+      changes:
+        - insert:
+            tableName: cards
+            columns:
+              - column:
+                  name: id
+                  value: "323e4567-e89b-12d3-a456-426614174011"
+              - column:
+                  name: card_number
+                  value: "1111222233334444"
+              - column:
+                  name: card_holder_name
+                  value: "John Doe"
+              - column:
+                  name: expiry_date
+                  value: "2028-05-31"
+              - column:
+                  name: status
+                  value: "ACTIVE"
+              - column:
+                  name: balance
+                  value: "750.00"
+              - column:
+                  name: user_id
+                  value: "123e4567-e89b-12d3-a456-426614174010"
+              - column:
+                  name: created_at
+                  value: "2024-01-01T00:00:00"
+              - column:
+                  name: updated_at
+                  value: "2024-01-01T00:00:00"
+
+  # ===== АДМИН 1 (admin) =====
+  - changeSet:
+      id: 13
+      author: OlegKovalev
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: "423e4567-e89b-12d3-a456-426614174020"
+              - column:
+                  name: username
+                  value: "admin"
+              - column:
+                  name: password
+                  value: "$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG"  # admin123
+              - column:
+                  name: email
+                  value: "admin@example.com"
+              - column:
+                  name: full_name
+                  value: "Admin User 1"
+              - column:
+                  name: created_at
+                  value: "2024-01-01T00:00:00"
+              - column:
+                  name: updated_at
+                  value: "2024-01-01T00:00:00"
+
+  - changeSet:
+      id: 14
+      author: OlegKovalev
+      changes:
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: "423e4567-e89b-12d3-a456-426614174020"
+              - column:
+                  name: roles
                   value: "ROLE_ADMIN"
         - insert:
             tableName: user_roles
             columns:
               - column:
                   name: user_id
-                  value: "423e4567-e89b-12d3-a456-426614174003"
+                  value: "423e4567-e89b-12d3-a456-426614174020"
               - column:
-                  name: role
+                  name: roles
+                  value: "ROLE_USER"
+
+  # ===== АДМИН 2 (superadmin) =====
+  - changeSet:
+      id: 15
+      author: OlegKovalev
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: "523e4567-e89b-12d3-a456-426614174030"
+              - column:
+                  name: username
+                  value: "superadmin"
+              - column:
+                  name: password
+                  value: "$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG"  # admin123
+              - column:
+                  name: email
+                  value: "superadmin@example.com"
+              - column:
+                  name: full_name
+                  value: "Super Admin"
+              - column:
+                  name: created_at
+                  value: "2024-01-01T00:00:00"
+              - column:
+                  name: updated_at
+                  value: "2024-01-01T00:00:00"
+
+  - changeSet:
+      id: 16
+      author: OlegKovalev
+      changes:
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: "523e4567-e89b-12d3-a456-426614174030"
+              - column:
+                  name: roles
+                  value: "ROLE_ADMIN"
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: "523e4567-e89b-12d3-a456-426614174030"
+              - column:
+                  name: roles
                   value: "ROLE_USER"

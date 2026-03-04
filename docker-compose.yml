@@ -31,7 +31,6 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bank_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-      JWT_SECRET: ${JWT_SECRET:-mySuperSecretKeyForJWTGenerationWithEnoughLengthForHS512!!!}
     ports:
       - "8080:8080"
     networks:
