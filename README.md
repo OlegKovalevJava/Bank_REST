@@ -1,15 +1,13 @@
 # Bank REST API
-
-REST API для управления банковскими картами.
+RESTful API для управления банковскими картами с аутентификацией через JWT и ролевым доступом (ADMIN/USER).
 
 # Клонирование проекта
-
 git clone https://github.com/OlegKovalevJava/Bank_REST.git
 
-# Запустить этап 1
+# Перейти в папку проекта(используем git bash)
 cd Bank_REST
 
-# Запустить этап 2
+# Запустить проект
 docker-compose up --build
 
 # После запуска:
