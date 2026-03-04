@@ -2,15 +2,15 @@
 
 REST API для управления банковскими картами.
 
-# Запуск проекта
+# Клонирование проекта
 
 git clone https://github.com/OlegKovalevJava/Bank_REST.git
+
+# Запустить этап 1
 cd Bank_REST
 
-# Запустить
+# Запустить этап 2
 docker-compose up --build
 
 # После запуска:
-
-API: http://localhost:8080
 Swagger UI: http://localhost:8080/swagger-ui/index.html

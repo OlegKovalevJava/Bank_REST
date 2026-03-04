@@ -4,6 +4,8 @@ import com.example.bankcards.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,5 +32,5 @@ public class User extends AbstractEntity {
             foreignKey = @ForeignKey(name = "fk_user_roles_users")
     )
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 }

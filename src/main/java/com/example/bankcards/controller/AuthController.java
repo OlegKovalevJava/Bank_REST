@@ -4,6 +4,7 @@ import com.example.bankcards.dto.response.JwtResponse;
 import com.example.bankcards.dto.request.LoginRequest;
 import com.example.bankcards.dto.request.RegisterRequest;
 import com.example.bankcards.entity.User;
+import com.example.bankcards.entity.enums.Role;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.security.JwtTokenProvider;
 import jakarta.validation.Valid;
@@ -15,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/auth")
@@ -60,23 +63,10 @@ public class AuthController {
         user.setEmail(registerRequest.getEmail());
         user.setFullName(registerRequest.getFullName());
 
+        user.setRoles(Set.of(Role.ROLE_USER));
+
         userRepository.save(user);
 
         return ResponseEntity.ok("User registered successfully!");
-    }
-
-    @GetMapping("/debug/user/{username}")
-    public String debugUser(@PathVariable String username) {
-        return userRepository.findByUsername(username)
-                .map(user -> "User found: " + user.getUsername() +
-                        ", password hash: " + user.getPassword())
-                .orElse("User not found");
-    }
-
-    @GetMapping("/debug/check-password")
-    public String checkPassword(@RequestParam String raw, @RequestParam String encoded) {
-        boolean matches = passwordEncoder.matches(raw, encoded);
-
-        return "Raw: " + raw + ", Encoded: " + encoded + ", Matches: " + matches;
     }
 }
