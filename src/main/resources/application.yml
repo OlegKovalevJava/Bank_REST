@@ -18,6 +18,9 @@ spring:
     enabled: true
     change-log: classpath:db/migration/master.yaml
 
+encryption:
+  secret-key: ${ENCRYPTION_SECRET:MySuperSecretKey12}
+
 jwt:
   secret: ${JWT_SECRET:-mySuperSecretKeyForJWTGenerationWithEnoughLengthForHS512AndEvenMoreToBeSafe!!!}
   expiration: 86400000
@@ -31,3 +34,4 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql: TRACE
     liquibase: INFO
+    com.example.bankcards.util: DEBUG
