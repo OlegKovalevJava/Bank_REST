@@ -1,8 +1,8 @@
 package com.example.bankcards.controller;
 
-import com.example.bankcards.dto.JwtResponse;
-import com.example.bankcards.dto.LoginRequest;
-import com.example.bankcards.dto.RegisterRequest;
+import com.example.bankcards.dto.response.JwtResponse;
+import com.example.bankcards.dto.request.LoginRequest;
+import com.example.bankcards.dto.request.RegisterRequest;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.security.JwtTokenProvider;
